@@ -11,7 +11,6 @@ import 'package:demo_youtube/util/loading_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'models/login_model.dart';
 
 int responseStatus = 400;
 
@@ -43,7 +42,7 @@ class _LoginState extends State<Login> {
   }
 
   Future<String> LoginUser(String email, String password) async {
-    final String CadenaConexion = 'http://localhost:8080/users/login';
+    final String CadenaConexion = 'http://192.168.0.100:8080/users/login';
     var json = {'email': email, 'password': password};
     final response = await http.post(Uri.parse(CadenaConexion),
         headers: <String, String>{

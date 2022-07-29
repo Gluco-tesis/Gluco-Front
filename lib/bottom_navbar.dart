@@ -1,6 +1,4 @@
-import 'dart:developer';
 
-import 'package:demo_youtube/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'home/home.dart';
 import 'search/search.dart';

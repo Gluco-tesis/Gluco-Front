@@ -226,7 +226,7 @@ class _SearchState extends State<Search> {
   }
 
   Future<String> Search(String date) async {
-    final String CadenaConexion = 'http://localhost:8080/measure/search';
+    final String CadenaConexion = 'http://192.168.0.100:8080/measure/search';
     int idN = AppProvider().userModel.id!;
     var json = {'userId': idN, 'date': date};
     final response = await http.post(Uri.parse(CadenaConexion),
@@ -246,7 +246,7 @@ class _SearchState extends State<Search> {
   }
 
   Future<void> TopList() async {
-    final String CadenaConexion = 'http://localhost:8080/measure/list';
+    final String CadenaConexion = 'http://192.168.0.100:8080/measure/list';
     int idN = AppProvider().userModel.id!;
     var json = {'userId': idN, 'count': 10};
     final response = await http.post(Uri.parse(CadenaConexion),

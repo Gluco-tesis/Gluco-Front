@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:demo_youtube/models/user_model.dart';
 import 'package:demo_youtube/provider.dart';
+import 'package:demo_youtube/util/loading_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:demo_youtube/bottom_navbar.dart';
@@ -20,7 +21,7 @@ class _HomeState extends State<Home> {
 
   Future<String> getmeasure(int? usrId) async {
     final String CadenaConexion =
-        'http://MBP-DE-RALF/measure/' + usrId.toString();
+        'http://192.168.0.100:8080/measure/' + usrId.toString();
     final response = await http.get(Uri.parse(CadenaConexion));
     if (response.statusCode == 200) {
       responseStatus = response.statusCode;
@@ -145,11 +146,22 @@ class _HomeState extends State<Home> {
 
   Widget BotonMedir(context) {
     return FlatButton(
-      onPressed: () async {
-        responseMeasure = await getmeasure(AppProvider().userModel.id);
-        var jsonMeasure = jsonDecode(responseMeasure);
-        measure = jsonMeasure['glucoseCal'].toString();
-        setState(() {});
+      onPressed: () {
+        LoadingPopup(
+          context: context,
+          onLoading: getMedir(),
+          onResult: (data) {
+            if (responseStatus == 200) {
+              var jsonMeasure = jsonDecode(responseMeasure);
+              measure = jsonMeasure['glucoseCal'].toString();
+              setState(() {});
+              ;
+            } else {
+              print('No fue buena');
+            }
+          },
+          onError: () {},
+        ).show();
       },
       minWidth: MediaQuery.of(context).size.width * 0.65,
       height: 55,
@@ -170,6 +182,10 @@ class _HomeState extends State<Home> {
       ),
       color: Colors.blue[600],
     );
+  }
+
+  getMedir() async {
+    responseMeasure = await getmeasure(AppProvider().userModel.id);
   }
 
   Widget Separador(context) {
